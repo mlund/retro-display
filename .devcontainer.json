@@ -1,0 +1,13 @@
+{
+  "image": "mrkits/rust-mos:1d7989f29-777e89e-bfefcd9e",
+  "onCreateCommand": "echo settings set target.load-cwd-lldbinit true > /home/mos/.lldbinit",
+  "settings": {
+    "rust-analyzer.checkOnSave.command": "check",
+    "rust-analyzer.checkOnSave.allTargets": false,
+    "rust-analyzer.diagnostics.disabled": [
+        "unresolved-macro-call",
+        "macro-error"
+    ]
+  },
+  "extensions": ["rust-lang.rust-analyzer", "serayuzgur.crates", "vadimcn.vscode-lldb", "tlgkccampbell.code-ca65", "tamasfe.even-better-toml"]
+}

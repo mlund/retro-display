@@ -1,0 +1,38 @@
+[package]
+name = "retro-display"
+version = "0.1.0"
+edition = "2021"
+authors = ["Mikael Lund <lyssky@icloud.com>"]
+homepage = "https://github.com/mlund/retro-display"
+documentation = "https://docs.rs/retro-display"
+repository = "https://github.com/mlund/retro-display"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+keywords = ["8-bit", "llvm-mos", "6502", "display"]
+categories = ["embedded", "no-std", "embedded-graphics"]
+
+[lib]
+doctest = false
+
+[features]
+c64 = []
+default = ["c64"]
+docs-rs = []
+
+[package.metadata.docs.rs]
+features = [ "docs-rs" ]
+
+[profile.release]
+strip = true      # Automatically strip symbols from the binary.
+opt-level = "s"   # Optimize for size.
+lto = true        # Link-time optimization.
+codegen-units = 1 # Compile the entire crate as a single unit.
+panic = "abort"   # Abort on panic.
+
+[dev-dependencies]
+embedded-graphics = {version = "0.8"}
+tinytga = "0.5.0"
+
+[dependencies]
+embedded-graphics-core = {version = "0.4"}
+
