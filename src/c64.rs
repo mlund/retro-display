@@ -21,24 +21,37 @@ use embedded_graphics_core::prelude::*;
 #[repr(u8)]
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub enum VicIIPalette {
+    /// Black color (<a style="color:#000000;">&#9679;</a>)
     Black = 0,
+    /// White color (<a style="color:#FFFFFF;">&#9679;</a>)
     White = 1,
+    /// Red color (<a style="color:#9F4E44;">&#9679;</a>)
     Red = 2,
+    /// Cyan color (<a style="color:#6ABFC6;">&#9679;</a>)
     Cyan = 3,
+    /// Purple color (<a style="color:#A057A3;">&#9679;</a>)
     Purple = 4,
+    /// Green color (<a style="color:#5CAB5E;">&#9679;</a>)
     Green = 5,
+    /// Blue color (<a style="color:#50459B;">&#9679;</a>)
     Blue = 6,
+    /// Yellow color (<a style="color:#C9D487;">&#9679;</a>)
     Yellow = 7,
+    /// Orange color (<a style="color:#A1683C;">&#9679;</a>)
     Orange = 8,
+    /// Brown color (<a style="color:#6D5412;">&#9679;</a>)
     Brown = 9,
+    /// Light Red color (<a style="color:#CB7E75;">&#9679;</a>)
     LightRed = 10,
-    /// Also known as gray 1
+    /// Dark Gray color or "gray 1" (<a style="color:#626262;">&#9679;</a>)
     DarkGray = 11,
-    /// Also known as gray 2
+    /// Gray color or "gray 2" (<a style="color:#898989;">&#9679;</a>)
     Gray = 12,
+    /// Light Green color (<a style="color:#9AE29B;">&#9679;</a>)
     LightGreen = 13,
+    /// Light Blue color (<a style="color:#887ECB;">&#9679;</a>)
     LightBlue = 14,
-    /// Also known as Gray 3
+    /// Light Gray color or "gray 3" (<a style="color:#ADADAD;">&#9679;</a>)
     LightGray = 15,
 }
 
