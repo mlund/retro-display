@@ -17,10 +17,10 @@
 use embedded_graphics_core::pixelcolor::*;
 use embedded_graphics_core::prelude::*;
 
-/// C64 color palette
+/// Color palette of the VIC-II chip found in e.g. the Commodore 64 and 128
 #[repr(u8)]
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
-pub enum C64Color {
+pub enum VicIIPalette {
     Black = 0,
     White = 1,
     Red = 2,
@@ -42,7 +42,7 @@ pub enum C64Color {
     LightGray = 15,
 }
 
-impl const From<Gray8> for C64Color {
+impl const From<Gray8> for VicIIPalette {
     fn from(value: Gray8) -> Self {
         match value.luma() {
             0..=31 => Self::Black,
@@ -55,43 +55,43 @@ impl const From<Gray8> for C64Color {
 }
 
 /// Todo: currently this simply transforms to grey scale
-impl const From<Rgb555> for C64Color {
+impl const From<Rgb555> for VicIIPalette {
     fn from(value: Rgb555) -> Self {
         Gray8::from(value).into()
     }
 }
 
 /// Todo: currently this simply transforms to grey scale
-impl const From<Rgb888> for C64Color {
+impl const From<Rgb888> for VicIIPalette {
     fn from(value: Rgb888) -> Self {
         Gray8::from(value).into()
     }
 }
 
-impl const From<C64Color> for Rgb888 {
-    fn from(color: C64Color) -> Self {
+impl const From<VicIIPalette> for Rgb888 {
+    fn from(color: VicIIPalette) -> Self {
         match color {
-            C64Color::Black => Self::new(0, 0, 0),
-            C64Color::White => Self::new(255, 255, 255),
-            C64Color::Red => Self::new(136, 0, 0),
-            C64Color::Cyan => Self::new(170, 255, 238),
-            C64Color::Purple => Self::new(204, 68, 204),
-            C64Color::Green => Self::new(0, 204, 85),
-            C64Color::Blue => Self::new(0, 0, 170),
-            C64Color::Yellow => Self::new(238, 238, 119),
-            C64Color::Orange => Self::new(221, 136, 85),
-            C64Color::Brown => Self::new(102, 68, 0),
-            C64Color::LightRed => Self::new(255, 119, 119),
-            C64Color::DarkGray => Self::new(51, 51, 51),
-            C64Color::Gray => Self::new(119, 119, 119),
-            C64Color::LightGreen => Self::new(170, 255, 102),
-            C64Color::LightBlue => Self::new(0, 136, 255),
-            C64Color::LightGray => Self::new(187, 187, 187),
+            VicIIPalette::Black => Self::new(0, 0, 0),
+            VicIIPalette::White => Self::new(255, 255, 255),
+            VicIIPalette::Red => Self::new(136, 0, 0),
+            VicIIPalette::Cyan => Self::new(170, 255, 238),
+            VicIIPalette::Purple => Self::new(204, 68, 204),
+            VicIIPalette::Green => Self::new(0, 204, 85),
+            VicIIPalette::Blue => Self::new(0, 0, 170),
+            VicIIPalette::Yellow => Self::new(238, 238, 119),
+            VicIIPalette::Orange => Self::new(221, 136, 85),
+            VicIIPalette::Brown => Self::new(102, 68, 0),
+            VicIIPalette::LightRed => Self::new(255, 119, 119),
+            VicIIPalette::DarkGray => Self::new(51, 51, 51),
+            VicIIPalette::Gray => Self::new(119, 119, 119),
+            VicIIPalette::LightGreen => Self::new(170, 255, 102),
+            VicIIPalette::LightBlue => Self::new(0, 136, 255),
+            VicIIPalette::LightGray => Self::new(187, 187, 187),
         }
     }
 }
 
-impl const PixelColor for C64Color {
+impl const PixelColor for VicIIPalette {
     type Raw = ();
 }
 
@@ -126,13 +126,13 @@ impl PetsciiDisplay {
     ///
     /// Unsafe as the index is unchecked and may write to memory outside the display.
     ///
-    unsafe fn set_pixel_unchecked(index: isize, color: C64Color) {
+    unsafe fn set_pixel_unchecked(index: isize, color: VicIIPalette) {
         Self::COLOR_RAM.offset(index).write(color as u8);
         Self::VIDEO_RAM.offset(index).write(Self::PIXEL_SYMBOL);
     }
 
     /// Set pixel with bounds checking
-    fn set_pixel(coord: &Point, color: C64Color) {
+    fn set_pixel(coord: &Point, color: VicIIPalette) {
         // inelegant but small(est?) binary size
         let x = coord.x as isize;
         if (0..Self::COLS).contains(&x) {
@@ -154,7 +154,7 @@ impl const OriginDimensions for PetsciiDisplay {
 }
 
 impl DrawTarget for PetsciiDisplay {
-    type Color = C64Color;
+    type Color = VicIIPalette;
     type Error = core::convert::Infallible;
 
     fn draw_iter<I>(&mut self, pixels: I) -> Result<(), Self::Error>

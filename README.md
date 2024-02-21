@@ -1,4 +1,4 @@
-# Embedded display drivers for retro computers
+# Embedded Display Drivers for Retro Computers
 
 [`Embedded-graphics`](https://crates.io/crates/embedded-graphics)
 display drivers for retro computers from Commodore, Atari, Nintendo etc.
@@ -12,7 +12,7 @@ display drivers for retro computers from Commodore, Atari, Nintendo etc.
   - [x] VIC-II color palette with `const` conversion from/to `embedded-graphics` colors
   - [ ] Bitmapped display driver
 
-## Getting started
+## Getting Started
 
 The project requires [rust-mos](https://github.com/mrk-its/rust-mos) and a docker image is available:
 [mrkits/rust-mos](https://hub.docker.com/r/mrkits/rust-mos).

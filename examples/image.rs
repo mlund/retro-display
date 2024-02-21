@@ -17,16 +17,16 @@
 
 use core::panic::PanicInfo;
 use embedded_graphics::{image::Image, prelude::*};
-use retro_display::c64::{C64Color, PetsciiDisplay};
+use retro_display::c64::{PetsciiDisplay, VicIIPalette};
 use tinytga::Tga;
 
 #[start]
 fn _main(_argc: isize, _argv: *const *const u8) -> isize {
     let mut display = PetsciiDisplay {};
-    display.clear(C64Color::Blue).unwrap();
+    display.clear(VicIIPalette::Blue).unwrap();
 
     const DATA: [u8; 2222] = *include_bytes!("../rust-pride.tga");
-    let tga: Tga<C64Color> = Tga::from_slice(&DATA).unwrap();
+    let tga: Tga<VicIIPalette> = Tga::from_slice(&DATA).unwrap();
     Image::new(&tga, Point::new(0, 0))
         .draw(&mut display)
         .unwrap();

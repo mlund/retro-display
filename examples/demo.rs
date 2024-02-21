@@ -22,19 +22,18 @@ use embedded_graphics::{
     primitives::{Circle, PrimitiveStyleBuilder},
     text::Text,
 };
-use retro_display::c64::{C64Color, PetsciiDisplay};
+use retro_display::c64::{PetsciiDisplay, VicIIPalette};
 
 #[start]
 fn _main(_argc: isize, _argv: *const *const u8) -> isize {
     let mut display = PetsciiDisplay {};
-    // display.clear(C64Color::Purple).unwrap();
 
     Circle::new(Point::new(7, 7), 37)
         .into_styled(
             PrimitiveStyleBuilder::new()
                 .stroke_width(2)
-                .stroke_color(C64Color::LightRed)
-                .fill_color(C64Color::Red)
+                .stroke_color(VicIIPalette::LightRed)
+                .fill_color(VicIIPalette::Red)
                 .build(),
         )
         .draw(&mut display)
@@ -42,7 +41,7 @@ fn _main(_argc: isize, _argv: *const *const u8) -> isize {
 
     let style = MonoTextStyleBuilder::new()
         .font(&FONT_4X6)
-        .text_color(C64Color::Yellow)
+        .text_color(VicIIPalette::Yellow)
         .build();
     Text::new("EMBEDDED-", Point::new(1, 17), style)
         .draw(&mut display)
