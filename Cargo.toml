@@ -29,6 +29,14 @@ lto = true        # Link-time optimization.
 codegen-units = 1 # Compile the entire crate as a single unit.
 panic = "abort"   # Abort on panic.
 
+[profile.dev]
+strip = true      # Automatically strip symbols from the binary.
+opt-level = "s"   # Optimize for size.
+lto = true        # Link-time optimization.
+codegen-units = 1 # Compile the entire crate as a single unit.
+panic = "abort"   # Abort on panic.
+
+
 [dev-dependencies]
 embedded-graphics = {version = "0.8"}
 tinytga = "0.5.0"
