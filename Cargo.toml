@@ -6,6 +6,7 @@ authors = ["Mikael Lund <lyssky@icloud.com>"]
 homepage = "https://github.com/mlund/retro-display"
 documentation = "https://docs.rs/retro-display"
 repository = "https://github.com/mlund/retro-display"
+description = "Embedded display drivers for retro computers"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 keywords = ["8-bit", "llvm-mos", "6502", "display"]
