@@ -17,7 +17,7 @@
 
 use core::panic::PanicInfo;
 use embedded_graphics::{
-    mono_font::{ascii::FONT_5X8, MonoTextStyleBuilder},
+    mono_font::{ascii::FONT_4X6, MonoTextStyleBuilder},
     prelude::*,
     primitives::{Circle, PrimitiveStyleBuilder},
     text::Text,
@@ -27,9 +27,9 @@ use retro_display::c64::{C64Color, PetsciiDisplay};
 #[start]
 fn _main(_argc: isize, _argv: *const *const u8) -> isize {
     let mut display = PetsciiDisplay {};
-    display.clear(C64Color::Blue).unwrap();
+    // display.clear(C64Color::Purple).unwrap();
 
-    Circle::new(Point::new(8, 0), 25)
+    Circle::new(Point::new(7, 7), 37)
         .into_styled(
             PrimitiveStyleBuilder::new()
                 .stroke_width(2)
@@ -41,15 +41,16 @@ fn _main(_argc: isize, _argv: *const *const u8) -> isize {
         .unwrap();
 
     let style = MonoTextStyleBuilder::new()
-        .font(&FONT_5X8)
+        .font(&FONT_4X6)
         .text_color(C64Color::Yellow)
-        .background_color(C64Color::DarkGray)
         .build();
-    Text::new("RUST-MOS", Point::new(0, 14), style)
+    Text::new("EMBEDDED-", Point::new(1, 17), style)
         .draw(&mut display)
         .unwrap();
-
-    loop {}
+    Text::new("GRAPHICS", Point::new(7, 17 + 6), style)
+        .draw(&mut display)
+        .unwrap();
+    0
 }
 
 #[panic_handler]

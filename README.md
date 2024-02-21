@@ -1,7 +1,9 @@
 # Embedded display drivers for retro computers
 
 [`Embedded-graphics`](https://crates.io/crates/embedded-graphics)
-display drivers for retro computer like Commodore, Atari, Nintendo etc.
+display drivers for retro computers from Commodore, Atari, Nintendo etc.
+
+<img src="assets/c64demo.png" width="500">
 
 ## Status
 

@@ -109,21 +109,51 @@ impl const PixelColor for C64Color {
 pub struct PetsciiDisplay {}
 
 impl PetsciiDisplay {
+    /// Number of columns in the C64 PETSCII display
+    const COLS: isize = 40;
+    /// Number of rows in the C64 PETSCII display
+    const ROWS: isize = 25;
     /// VIC-II video memory pointer
     const VIDEO_RAM: *mut u8 = (0x0400) as *mut u8;
     /// VIC-II color memory pointer
     const COLOR_RAM: *mut u8 = (0xd800) as *mut u8;
     /// PETSCII symbol to mimic a pixel (filled square)
     const PIXEL_SYMBOL: u8 = 0xa0;
+
+    /// Set pixel without checking if the position is within bounds
+    ///
+    /// # Safety
+    ///
+    /// Unsafe as the index is unchecked and may write to memory outside the display.
+    ///
+    unsafe fn set_pixel_unchecked(index: isize, color: C64Color) {
+        Self::COLOR_RAM.offset(index).write(color as u8);
+        Self::VIDEO_RAM.offset(index).write(Self::PIXEL_SYMBOL);
+    }
+
+    /// Set pixel with bounds checking
+    fn set_pixel(coord: &Point, color: C64Color) {
+        // inelegant but small(est?) binary size
+        let x = coord.x as isize;
+        if (0..Self::COLS).contains(&x) {
+            let y = coord.y as isize;
+            if (0..Self::ROWS).contains(&y) {
+                let index = x + y * Self::COLS;
+                unsafe {
+                    Self::set_pixel_unchecked(index, color);
+                }
+            }
+        }
+    }
 }
 
 impl const OriginDimensions for PetsciiDisplay {
     fn size(&self) -> Size {
-        Size::new(40, 25)
+        Size::new(Self::COLS as u32, Self::ROWS as u32)
     }
 }
 
-impl const DrawTarget for PetsciiDisplay {
+impl DrawTarget for PetsciiDisplay {
     type Color = C64Color;
     type Error = core::convert::Infallible;
 
@@ -131,15 +161,9 @@ impl const DrawTarget for PetsciiDisplay {
     where
         I: IntoIterator<Item = Pixel<Self::Color>>,
     {
-        for Pixel(coord, color) in pixels.into_iter() {
-            if let (x @ 0..=39, y @ 0..=24) = coord.into() {
-                let index = (x + y * 40) as isize;
-                unsafe {
-                    Self::COLOR_RAM.offset(index).write(color as u8);
-                    Self::VIDEO_RAM.offset(index).write(Self::PIXEL_SYMBOL);
-                }
-            }
-        }
+        pixels
+            .into_iter()
+            .for_each(|Pixel(coord, color)| Self::set_pixel(&coord, color));
         Ok(())
     }
 }
