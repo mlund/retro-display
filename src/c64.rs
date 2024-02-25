@@ -14,6 +14,7 @@
 
 //! Commodore 64 display drivers and color palette
 
+use embedded_graphics_core::pixelcolor::raw::RawU4;
 use embedded_graphics_core::pixelcolor::*;
 use embedded_graphics_core::prelude::*;
 
@@ -105,7 +106,25 @@ impl const From<VicIIPalette> for Rgb888 {
 }
 
 impl const PixelColor for VicIIPalette {
-    type Raw = ();
+    type Raw = RawU4;
+}
+
+impl const From<RawU4> for VicIIPalette {
+    fn from(value: RawU4) -> Self {
+        let color_index = value.into_inner();
+
+        // SAFETY:
+        // RawU4 guarantees that the value inside will always be in the range
+        // 0..=15. This and the fact that VicIIPalette is repr(u8) makes it save
+        // to transmute the u8 to a VicIIPalette.
+        unsafe { core::mem::transmute::<u8, VicIIPalette>(color_index) }
+    }
+}
+
+impl const From<VicIIPalette> for RawU4 {
+    fn from(value: VicIIPalette) -> Self {
+        RawU4::new(value as u8)
+    }
 }
 
 /// Color PETSCII Display Driver
