@@ -16,20 +16,24 @@
 #![feature(start)]
 
 use core::panic::PanicInfo;
-use embedded_graphics::{image::Image, prelude::*};
+use embedded_graphics::{
+    image::{Image, ImageRawLE},
+    prelude::*,
+};
 use retro_display::c64::{PetsciiDisplay, VicIIPalette};
-use tinytga::Tga;
+
+const LOGO_DATA: &[u8] = include_bytes!("eg-logo.raw");
 
 #[start]
 fn _main(_argc: isize, _argv: *const *const u8) -> isize {
     let mut display = PetsciiDisplay {};
-    display.clear(VicIIPalette::Blue).unwrap();
+    display.clear(VicIIPalette::Black).unwrap();
 
-    const DATA: [u8; 2222] = *include_bytes!("../rust-pride.tga");
-    let tga: Tga<VicIIPalette> = Tga::from_slice(&DATA).unwrap();
-    Image::new(&tga, Point::new(0, 0))
+    let logo: ImageRawLE<VicIIPalette> = ImageRawLE::new(LOGO_DATA, 20);
+    Image::new(&logo, Point::new(10, 0))
         .draw(&mut display)
         .unwrap();
+
     loop {}
 }
 
